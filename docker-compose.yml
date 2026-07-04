@@ -1,0 +1,59 @@
+services:
+  # Backend .NET 9 — cổng nội bộ 5000, kết nối SQL Server localhost:1433.
+  # network_mode: host → localhost trong container = localhost máy.
+  backend_dotnet:
+    build:
+      context: ./Backend_Dotnet
+      dockerfile: Dockerfile
+    container_name: backend_dotnet
+    network_mode: host
+    environment:
+      ASPNETCORE_URLS: "http://+:5000"
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnectionString: "Data Source=localhost,1433;User ID=sa;Password=Khoitoc123;Database=Web_Badminton;Encrypt=True;TrustServerCertificate=True;Connect Timeout=30"
+    restart: unless-stopped
+
+  # Backend Python (Flask) — cổng nội bộ 5001, cùng SQL Server localhost.
+  backend_python:
+    build:
+      context: ./Backend_Python
+      dockerfile: Dockerfile
+    container_name: backend_python
+    network_mode: host
+    environment:
+      FLASK_DEBUG: "False"
+      SECRET_KEY: "change-me-in-production"
+      DATABASE_URL: "mssql+pyodbc://sa:Khoitoc123@localhost,1433/Web_Badminton?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+    volumes:
+      # Giữ ảnh/video bảo hành khi rebuild container
+      - ./Backend_Python/uploads:/app/uploads
+    restart: unless-stopped
+
+  # API Gateway (nginx) — 1 cổng duy nhất 8000 route tới cả 2 backend:
+  #   /api/python/*  → Python (5001)
+  #   /*             → .NET   (5000)
+  gateway:
+    image: nginx:alpine
+    container_name: gateway
+    network_mode: host
+    volumes:
+      - ./gateway/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend_dotnet
+      - backend_python
+    restart: unless-stopped
+
+  # FrontEnd (Vite dev) — cổng 3000, proxy /api → gateway localhost:8000.
+  # Mount source để hot-reload; giữ node_modules trong container.
+  frontend:
+    build:
+      context: ./FrontEnd
+      dockerfile: Dockerfile.dev
+    container_name: frontend
+    network_mode: host
+    volumes:
+      - ./FrontEnd:/app
+      - /app/node_modules
+    restart: unless-stopped
+    depends_on:
+      - gateway

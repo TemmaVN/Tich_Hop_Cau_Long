@@ -1,0 +1,12 @@
+# FrontEnd dev mode — chạy `npm run dev` (Vite) trong container.
+FROM node:20-alpine
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+# --host để Vite lắng nghe mọi interface (cần khi chạy trong container)
+CMD ["npm", "run", "dev", "--", "--host"]

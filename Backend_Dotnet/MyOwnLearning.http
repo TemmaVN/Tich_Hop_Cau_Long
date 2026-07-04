@@ -1,0 +1,44 @@
+@URL = http://localhost:5106
+
+GET {{URL}}/weatherforecast/
+Accept: application/json
+
+###
+GET {{URL}}/api/product/home
+accept: application/json
+
+###
+GET {{URL}}/api/product/searchAsync?keyword=astrox&categorySlug=vot-cau-long&brandSlug=yonex
+
+###
+POST {{URL}}/api/Auth/register
+content-type: application/json
+{
+    "Email": "minh@123",
+    "Password": "123456"
+}
+###
+POST {{URL}}/api/Auth/login
+content-type: application/json
+{
+    "Email": "minh@123",
+    "Password": "234567"
+}
+###
+GET {{URL}}/api/User?keyword=inh
+content-type: application/json
+
+###
+POST {{URL}}/api/User
+content-type: application/json
+{
+    "Email" : "anhminh", 
+    "Password" : "123456",
+    "Roles" : [
+        "Stringer",
+        "Customer"
+    ]
+}
+
+
+    
