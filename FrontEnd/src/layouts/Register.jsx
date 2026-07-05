@@ -45,7 +45,7 @@ const Register = () => {
   return (
     <div className='flex w-full h-auto text-black dark:text-white'>
       {
-        isShowPic && <img src="https://cdn.shopvnb.com/uploads/images/bai_viet/anh-cau-long-ngau-1-1737322298.webp" alt="" className='w-1/2 h-auto'/>
+        isShowPic && <img src="/images/register-badminton.webp" alt="" className='w-1/2 h-auto'/>
       }
         <form action="" className='flex flex-col grow max-w-150 mx-10 my-20 md:mx-20 justify-center gap-1'>
             <label htmlFor="" className='font-bold text-4xl'>Đăng ký</label>

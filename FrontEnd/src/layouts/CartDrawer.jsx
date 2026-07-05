@@ -151,7 +151,7 @@ const CartDrawer = ({ isOpen, setIsOpen }) => {
         {/* Hình trang trí cầu lông (giống ảnh image_f1eaf5.png) */}
         <div className="absolute bottom-24 right-4 opacity-20 pointer-events-none select-none">
           <img 
-            src="https://cdn-icons-png.flaticon.com/512/2855/2855584.png" 
+            src="/images/empty-cart.png"
             alt="decoration" 
             className="w-24 h-24 grayscale brightness-150"
           />
