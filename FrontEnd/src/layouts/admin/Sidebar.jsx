@@ -46,6 +46,7 @@ const menuItems = [
       // { id: "thanh-toan", label: "Thanh toán",       path: "payment"  },
       { id: "voucher",    label: "Voucher",          path: "vouchers" },
       { id: "kho-hang",   label: "Quản lý kho",      path: "inventory", icon: Warehouse },
+      { id: "bao-hanh", label:"Bảo hành", path: "warranty",},
       { id: "danh-gia",   label: "Đánh giá",          path: "reviews",   icon: Star },
       { id: "tra-hang",   label: "Trả hàng/Hoàn tiền", path: "returns",   icon: RotateCcw },
     ],

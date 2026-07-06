@@ -1,0 +1,63 @@
+{
+    // Debug các service chạy trong Docker.
+    // Bước 1: docker compose -f docker-compose.yml -f docker-compose.debug.yml up --build
+    // Bước 2: chọn cấu hình bên dưới rồi F5.
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // Cần extension Python (ms-python.python). Attach vào debugpy trong container.
+            "name": "Python: Attach Docker (Flask)",
+            "type": "debugpy",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",
+                "port": 5678
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/Backend_Python",
+                    "remoteRoot": "/app"
+                }
+            ],
+            "justMyCode": true
+        },
+        {
+            // Cần extension C# (ms-dotnettools.csharp). Attach vào process dotnet
+            // trong container qua docker exec; chọn process "MyOwnLearning.dll" khi được hỏi.
+            "name": ".NET: Attach Docker (ASP.NET)",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:pickRemoteProcess}",
+            "pipeTransport": {
+                "pipeProgram": "docker",
+                "pipeArgs": ["exec", "-i", "backend_dotnet"],
+                "debuggerPath": "/vsdbg/vsdbg",
+                "pipeCwd": "${workspaceFolder}",
+                "quoteArgs": false
+            },
+            "sourceFileMap": {
+                "/src": "${workspaceFolder}/Backend_Dotnet"
+            },
+            "justMyCode": true
+        },
+        {
+            // Mở Chrome trỏ vào Vite dev server; breakpoint đặt trong FrontEnd/src.
+            // Nếu dùng Edge thì đổi "type" thành "msedge".
+            "name": "React: Chrome (Vite 3000)",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/FrontEnd"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Debug cả 3 (Python + .NET + React)",
+            "configurations": [
+                "Python: Attach Docker (Flask)",
+                ".NET: Attach Docker (ASP.NET)",
+                "React: Chrome (Vite 3000)"
+            ]
+        }
+    ]
+}

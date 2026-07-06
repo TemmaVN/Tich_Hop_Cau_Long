@@ -1,0 +1,27 @@
+# Override để debug bằng VS Code (đặt breakpoint trong container).
+# Chạy:
+#   docker compose -f docker-compose.yml -f docker-compose.debug.yml up --build
+# Sau đó vào VS Code > Run and Debug (Ctrl+Shift+D) chọn cấu hình attach tương ứng.
+services:
+  # .NET: build stage debug (cấu hình Debug + vsdbg), attach qua docker exec.
+  backend_dotnet:
+    build:
+      context: ./Backend_Dotnet
+      dockerfile: Dockerfile
+      target: debug
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  # Python: debugpy lắng nghe cổng 5678 (network_mode host → localhost:5678).
+  # Mount source để sửa code chỉ cần restart container, không cần rebuild.
+  backend_python:
+    build:
+      context: ./Backend_Python
+      dockerfile: Dockerfile
+      target: debug
+    volumes:
+      - ./Backend_Python:/app
+      - ./Backend_Python/uploads:/app/uploads
+
+  # FrontEnd không cần đổi gì: source đã mount sẵn, Vite serve source map,
+  # debug bằng cấu hình "React: Chrome" trong .vscode/launch.json.
