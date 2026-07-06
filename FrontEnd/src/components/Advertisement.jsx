@@ -14,7 +14,7 @@ const Advertisement = ({linkAdvertisement}) => {
     return () => clearInterval(slideTimer);
   }, [length]);
   return (
-    <div className="w-full overflow-hidden relative group">
+    <div className="w-full h-1/2 overflow-hidden relative group">
       <div
         className={`flex ${countAd == 0 ? "" : "transition-transform duration-700"} ease-in-out`}
         style={{ transform: `translateX(-${countAd * 100}%)` }}

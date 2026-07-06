@@ -204,9 +204,11 @@ const HomePage = () => {
           }
         `}
       </style>
-
-      <Advertisement linkAdvertisement={linkAdvertisement} />
-
+      <div className="w-full flex justify-center">
+        <div className="h-1/2 w-1/2 flex justify-center">
+          <Advertisement linkAdvertisement={linkAdvertisement} />
+        </div>
+      </div>
       <div className="relative bg-gray-50 dark:bg-slate-950 py-1">
         {/* RENDER DẢI TRANG TRÍ CHẠY DỌC 2 BÊN */}
         <AnimatedSideDecoration side="left" />
